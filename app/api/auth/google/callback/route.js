@@ -29,7 +29,7 @@ export async function GET(request) {
   const code = searchParams.get('code');
   const error = searchParams.get('error');
 
-  const base = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+  const base = process.env.NEXT_PUBLIC_BASE_URL;
 
   // User denied access
   if (error || !code) {

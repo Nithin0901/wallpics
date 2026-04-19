@@ -223,7 +223,7 @@ export async function POST(request) {
                 </div>
                 <p style="color:#6060788;font-size:12px;">Please log in to the admin dashboard to review and approve/reject it.</p>
                 <div style="text-align: center; margin-top: 32px;">
-                  <a href="${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/admin" style="background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#ffffff;padding:14px 28px;text-decoration:none;border-radius:12px;font-weight:bold;font-size:14px;display:inline-block;letter-spacing:0.05em;">View Dashboard</a>
+                  <a href="${process.env.NEXT_PUBLIC_BASE_URL}/admin" style="background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#ffffff;padding:14px 28px;text-decoration:none;border-radius:12px;font-weight:bold;font-size:14px;display:inline-block;letter-spacing:0.05em;">View Dashboard</a>
                 </div>
               </div>
             `
