@@ -14,7 +14,7 @@ export function ThemeProvider({ children }) {
 
   // Hydrate from localStorage on mount
   useEffect(() => {
-    const stored = localStorage.getItem('glaller-theme');
+    const stored = localStorage.getItem('aurovoid-theme');
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     const resolved = stored ?? (prefersDark ? 'dark' : 'light');
     setTheme(resolved);
@@ -36,7 +36,7 @@ export function ThemeProvider({ children }) {
   function toggleTheme() {
     const next = theme === 'dark' ? 'light' : 'dark';
     setTheme(next);
-    localStorage.setItem('glaller-theme', next);
+    localStorage.setItem('aurovoid-theme', next);
     applyTheme(next);
   }
 

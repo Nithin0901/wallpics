@@ -51,16 +51,14 @@ export default function Sidebar({ isOpen, onClose }) {
       >
         {/* ── Header / Logo (Fixed) ─────────────────── */}
         <div className="flex-none flex items-center justify-between gap-3 px-6 py-6 border-b border-border">
-          <Link href="/" className="flex items-center gap-3 active:scale-95 transition-transform">
-            <div
-              className="w-10 h-10 rounded-2xl flex items-center justify-center text-white font-black text-xs relative overflow-hidden shadow-2xl shadow-purple-900/40"
-              style={{ background: 'linear-gradient(135deg,#7c3aed,#4f46e5)' }}
-            >
-              <div className="absolute inset-0 bg-white/20 opacity-10" />
-              <span className="relative z-10">GL</span>
-            </div>
+          <Link href="/" className="flex items-center  active:scale-95 transition-transform">
+            <img
+              src="/logo.png"
+              alt="AUROVOID Logo"
+              className="w-14 h-14 rounded-2xl object-cover shadow-2xl shadow-purple-900/60 hover:scale-105 transition-transform duration-300"
+            />
             <span className="text-lg font-black text-text-primary italic tracking-tighter uppercase">
-              GLALLER<span className="text-purple-primary">Hub</span>
+              AURO<span className="text-purple-primary">VOID</span>
             </span>
           </Link>
           

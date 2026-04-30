@@ -19,6 +19,11 @@ const WallpaperSchema = new mongoose.Schema(
       type: String,
       required: [true, 'Image is required'],
     },
+    // ID from Cloudinary for deletion/management
+    cloudinaryId: {
+      type: String,
+      default: null,
+    },
     mainCategory: {
       type: String,
       required: [true, 'Main category (orientation) is required'],

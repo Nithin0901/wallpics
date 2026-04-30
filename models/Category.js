@@ -23,6 +23,14 @@ const CategorySchema = new mongoose.Schema(
       trim: true,
       default: 'nature',
     },
+    image: {
+      type: String,
+      default: '',
+    },
+    cloudinaryId: {
+      type: String,
+      default: null,
+    },
     type: {
       type: String,
       enum: ['main', 'sub'],

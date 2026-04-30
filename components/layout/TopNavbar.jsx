@@ -56,16 +56,14 @@ export default function TopNavbar({ onMenuToggle }) {
         </button>
 
         {/* Branding */}
-        <Link href="/" className="flex items-center gap-3 mr-8 group transition-transform active:scale-95">
-          <div
-            className="w-10 h-10 rounded-2xl flex items-center justify-center text-white font-black text-xs relative overflow-hidden shadow-2xl shadow-purple-900/40"
-            style={{ background: 'linear-gradient(135deg,#7c3aed,#4f46e5)' }}
-          >
-            <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity" />
-            <span className="relative z-10">GL</span>
-          </div>
+        <Link href="/" className="flex items-center  mr-8 group transition-transform active:scale-95">
+          <img
+            src="/logo.png"
+            alt="AUROVOID Logo"
+            className="w-14 h-14 rounded-2xl object-cover shadow-2xl shadow-purple-900/60 group-hover:scale-105 transition-transform duration-300"
+          />
           <span className="hidden lg:block text-lg font-black text-text-primary italic tracking-tighter uppercase">
-            GLALLER<span className="text-purple-primary">Hub</span>
+            AURO<span className="text-purple-primary">VOID</span>
           </span>
         </Link>
 

@@ -47,10 +47,14 @@ export default function CategorySection() {
               style={{ aspectRatio: isWide ? '21/9' : '1' }}
             >
               <img
-                src={`https://images.unsplash.com/photo-${cat.seed || '1618005182384-a83a8bd57fbe'}?auto=format&fit=crop&q=80&w=800`}
+                src={cat.image || `https://images.unsplash.com/photo-${cat.seed || '1618005182384-a83a8bd57fbe'}?auto=format&fit=crop&q=80&w=800`}
                 alt={cat.name}
                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 ease-out"
-                onError={(e) => { e.target.src = `https://picsum.photos/seed/${cat.name}/800/800`; }}
+                onError={(e) => { 
+                  if (!cat.image) {
+                    e.target.src = `https://picsum.photos/seed/${cat.name}/800/800`; 
+                  }
+                }}
               />
               
               {/* Dynamic Overlay */}

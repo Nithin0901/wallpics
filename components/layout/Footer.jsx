@@ -10,14 +10,13 @@ export default function Footer() {
           {/* Brand Info */}
           <div className="space-y-6">
             <Link href="/" className="flex items-center gap-3 group">
-              <div
-                className="w-10 h-10 rounded-2xl flex items-center justify-center text-white font-black text-xs relative overflow-hidden shadow-2xl shadow-purple-900/40"
-                style={{ background: 'linear-gradient(135deg,#7c3aed,#4f46e5)' }}
-              >
-                GL
-              </div>
+              <img
+                src="/logo.png"
+                alt="AUROVOID Logo"
+                className="w-10 h-10 rounded-2xl object-cover shadow-2xl shadow-purple-900/60 group-hover:scale-105 transition-transform duration-300"
+              />
               <span className="text-xl font-black text-text-primary italic tracking-tighter uppercase">
-                GLALLER<span className="text-purple-primary">Hub</span>
+                AURO<span className="text-purple-primary">VOID</span>
               </span>
             </Link>
             <p className="text-sm text-text-muted leading-relaxed max-w-xs font-medium">
@@ -59,7 +58,7 @@ export default function Footer() {
             <div className="space-y-4">
               <div className="flex items-center gap-3 text-sm font-medium text-text-muted">
                 <Mail size={16} className="text-purple-primary" />
-                <span>hello@glallerhub.com</span>
+                <span>hello@aurovoid.com</span>
               </div>
               <div className="flex items-center gap-3 text-sm font-medium text-text-muted">
                 <Globe size={16} className="text-purple-primary" />
@@ -77,7 +76,7 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="border-t border-border pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-[10px] font-black text-text-muted uppercase tracking-[0.3em]">
-            © 2026 GLALLERHUB PLATFORM. ALL RIGHTS RESERVED.
+            © 2026 AUROVOID PLATFORM. ALL RIGHTS RESERVED.
           </p>
           <div className="flex gap-6 h-fit">
             <Link href="/privacy" className="text-[10px] font-black text-text-muted hover:text-text-primary transition-colors uppercase tracking-widest">Privacy Protocol</Link>

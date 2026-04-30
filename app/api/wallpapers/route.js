@@ -4,10 +4,10 @@
  * POST /api/wallpapers — Upload a new wallpaper (authenticated users, status=pending)
  */
 import { NextResponse } from 'next/server';
-import { writeFile, mkdir } from 'fs/promises';
 import path from 'path';
 import connectDB from '@/lib/db';
 import Wallpaper from '@/models/Wallpaper';
+import { uploadToCloudinary } from '@/lib/cloudinary';
 import Category from '@/models/Category';
 import User from '@/models/User';
 import { getAuthUser } from '@/lib/auth';
@@ -153,12 +153,27 @@ export async function POST(request) {
     const ext = file.name.split('.').pop().toLowerCase();
     const filename = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}.${ext}`;
 
-    // Write file to public/uploads
+    // ─── Upload to Cloudinary ───
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
-    const uploadDir = path.join(process.cwd(), 'public', 'uploads');
-    await mkdir(uploadDir, { recursive: true });
-    await writeFile(path.join(uploadDir, filename), buffer);
+    
+    let cloudinaryResult;
+    try {
+      console.log('[UPLOAD] Passing buffer to Cloudinary...');
+      cloudinaryResult = await uploadToCloudinary(buffer, 'wallpapers');
+    } catch (cloudErr) {
+      console.error('[UPLOAD] Cloudinary operation failed:', {
+        message: cloudErr.message,
+        name: cloudErr.name,
+        http_code: cloudErr.http_code,
+        error: cloudErr
+      });
+      return NextResponse.json({ 
+        error: 'Cloud storage upload failed', 
+        details: cloudErr.message 
+      }, { status: 500 });
+    }
+
 
     // Save wallpaper to DB (status defaults to 'pending')
     await connectDB();
@@ -183,7 +198,8 @@ export async function POST(request) {
 
     const wallpaper = await Wallpaper.create({
       title: title.trim(),
-      image: `/uploads/${filename}`,
+      image: cloudinaryResult.secure_url,
+      cloudinaryId: cloudinaryResult.public_id,
       mainCategory,
       subCategory,
       uploadedBy: authUser.id,

@@ -9,6 +9,7 @@ import path from 'path';
 import connectDB from '@/lib/db';
 import Wallpaper from '@/models/Wallpaper';
 import { getAuthUser } from '@/lib/auth';
+import cloudinary from '@/lib/cloudinary';
 
 export const dynamic = 'force-dynamic';
 
@@ -118,13 +119,22 @@ export async function DELETE(request, { params }) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
-    // Delete local file if it's in /uploads/
+    // ─── Delete remote asset (Cloudinary) ───
+    if (wallpaper.cloudinaryId) {
+      try {
+        await cloudinary.uploader.destroy(wallpaper.cloudinaryId);
+      } catch (cloudErr) {
+        console.error('Cloudinary deletion failed:', cloudErr);
+      }
+    }
+
+    // Delete local file if it's in /uploads/ (legacy support)
     if (wallpaper.image.startsWith('/uploads/')) {
       const filePath = path.join(process.cwd(), 'public', wallpaper.image);
       try {
         await unlink(filePath);
       } catch {
-        // File may already be gone, continue anyway
+        // File may already be gone
       }
     }
 

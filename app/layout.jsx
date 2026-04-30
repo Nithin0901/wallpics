@@ -7,17 +7,21 @@ import { ThemeProvider } from '@/context/ThemeContext';
 import { Toaster } from 'react-hot-toast';
 
 export const metadata = {
-  title: 'GLALLER Hub — High-End Discovery Archving',
+  title: 'AUROVOID — High-End Discovery Archive',
   description:
-    'The world\'s most elite discovery hub for high-end digital assets and immersive wallpapers. Curated by creators, for the dreamers.',
-  keywords: 'wallpapers, aesthetics, 4K, 8K, digital art, glaller, discovery hub',
+    'The world\'s most elite discovery platform for high-end digital assets and immersive wallpapers. Curated by creators, for the dreamers.',
+  keywords: 'wallpapers, aesthetics, 4K, 8K, digital art, aurovoid, discovery platform',
+  icons: {
+    icon: '/logo.png',
+    apple: '/logo.png',
+  },
 };
 
 // Blocking script — runs before paint to prevent flash of wrong theme
 const themeScript = `
   (function() {
     try {
-      var t = localStorage.getItem('glaller-theme');
+      var t = localStorage.getItem('aurovoid-theme');
       if (!t) t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
       document.documentElement.setAttribute('data-theme', t);
       if (t === 'dark') document.documentElement.classList.add('dark');

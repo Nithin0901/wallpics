@@ -4,8 +4,7 @@ import connectDB from '@/lib/db';
 import Wallpaper from '@/models/Wallpaper';
 import Category from '@/models/Category';
 import axios from 'axios';
-import { writeFile, mkdir } from 'fs/promises';
-import path from 'path';
+import { uploadToCloudinary } from '@/lib/cloudinary';
 import sharp from 'sharp';
 import { Vibrant } from 'node-vibrant/node';
 
@@ -61,12 +60,16 @@ export async function POST(request) {
       .webp({ quality: 92 })
       .toBuffer();
 
-    const filename = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}.webp`;
-    const uploadDir = path.join(process.cwd(), 'public', 'uploads');
-    
-    await mkdir(uploadDir, { recursive: true });
-    await writeFile(path.join(uploadDir, filename), cleanBuffer);
-    console.log(`[SCRAPER] File Saved: ${filename}`);
+    // ─── Upload to Cloudinary ───
+    let cloudinaryResult;
+    try {
+      cloudinaryResult = await uploadToCloudinary(cleanBuffer, 'scraped');
+      console.log(`[SCRAPER] Asset uploaded to Cloudinary: ${cloudinaryResult.public_id}`);
+    } catch (cloudErr) {
+      console.error('[SCRAPER] Cloudinary upload failed:', cloudErr);
+      throw new Error("Cloud storage upload failed during import");
+    }
+
 
     // AI Palette Extraction
     let paletteHexes = [];
@@ -90,7 +93,8 @@ export async function POST(request) {
 
     const wallpaper = await Wallpaper.create({
       title: title.trim(),
-      image: `/uploads/${filename}`,
+      image: cloudinaryResult.secure_url,
+      cloudinaryId: cloudinaryResult.public_id,
       mainCategory,
       subCategory,
       uploadedBy: authUser.id,

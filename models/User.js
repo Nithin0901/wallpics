@@ -52,6 +52,10 @@ const UserSchema = new mongoose.Schema(
       type: String,
       default: '',
     },
+    profileCloudinaryId: {
+      type: String,
+      default: null,
+    },
     likedWallpapers: [
       {
         type: mongoose.Schema.Types.ObjectId,

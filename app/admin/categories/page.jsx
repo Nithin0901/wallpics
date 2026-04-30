@@ -19,12 +19,18 @@ export default function AdminCategoriesPage() {
   const [description, setDescription] = useState('');
   const [emoji, setEmoji] = useState('');
   const [seed, setSeed] = useState('');
+  const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState('');
+  const [currentImageUrl, setCurrentImageUrl] = useState('');
 
   const resetForm = () => {
     setName('');
     setDescription('');
     setEmoji('');
     setSeed('');
+    setImageFile(null);
+    setImagePreview('');
+    setCurrentImageUrl('');
     setEditingId(null);
   };
 
@@ -33,6 +39,8 @@ export default function AdminCategoriesPage() {
     setDescription(cat.description || '');
     setEmoji(cat.emoji || '');
     setSeed(cat.seed || '');
+    setCurrentImageUrl(cat.image || '');
+    setImagePreview(cat.image || '');
     setEditingId(cat._id);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -41,13 +49,25 @@ export default function AdminCategoriesPage() {
     e.preventDefault();
     if (!name.trim()) return toast.error('Name is required');
 
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('description', description);
+    formData.append('emoji', emoji);
+    formData.append('seed', seed);
+    if (imageFile) {
+      formData.append('image', imageFile);
+    }
+    if (editingId) {
+      formData.append('id', editingId);
+    }
+
     setIsSubmitting(true);
     try {
       if (editingId) {
-        await apiClient.put('/admin/categories', { id: editingId, name, description, emoji, seed });
+        await apiClient.put('/admin/categories', formData);
         toast.success('Category updated!');
       } else {
-        await apiClient.post('/admin/categories', { name, description, emoji, seed });
+        await apiClient.post('/admin/categories', formData);
         toast.success('Category created!');
       }
       resetForm();
@@ -152,6 +172,38 @@ export default function AdminCategoriesPage() {
                   />
                 </div>
               </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-text-secondary mb-1">Custom Thumbnail</label>
+                <div className="flex items-center gap-4">
+                  {(imagePreview || currentImageUrl) && (
+                    <div className="w-16 h-12 rounded-lg overflow-hidden border border-border shadow-sm">
+                      <img src={imagePreview || currentImageUrl} alt="Preview" className="w-full h-full object-cover" />
+                    </div>
+                  )}
+                  <div className="flex-1">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      id="cat-image-upload"
+                      onChange={(e) => {
+                        const file = e.target.files[0];
+                        if (file) {
+                          setImageFile(file);
+                          setImagePreview(URL.createObjectURL(file));
+                        }
+                      }}
+                    />
+                    <label 
+                      htmlFor="cat-image-upload"
+                      className="flex items-center justify-center gap-2 w-full py-2 border-2 border-dashed border-border rounded-xl text-[10px] font-black uppercase tracking-widest text-text-muted hover:border-purple-primary hover:text-text-primary transition-all cursor-pointer"
+                    >
+                      <Plus size={14} /> {imageFile ? 'Change Image' : 'Upload Image'}
+                    </label>
+                  </div>
+                </div>
+              </div>
               
               <div className="flex gap-2 mt-2">
                 <button
@@ -207,8 +259,12 @@ export default function AdminCategoriesPage() {
                     }`}
                   >
                     <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-xl flex flex-col items-center justify-center bg-bg-elevated border border-[rgba(124,58,237,0.15)] flex-shrink-0">
-                        <span className="text-xl leading-none">{cat.emoji || '📁'}</span>
+                      <div className="w-12 h-12 rounded-xl overflow-hidden bg-bg-elevated border border-[rgba(124,58,237,0.15)] flex-shrink-0 flex items-center justify-center">
+                        {cat.image ? (
+                          <img src={cat.image} alt={cat.name} className="w-full h-full object-cover" />
+                        ) : (
+                          <span className="text-xl leading-none">{cat.emoji || '📁'}</span>
+                        )}
                       </div>
                       <div>
                         <p className="font-bold text-text-primary text-sm flex items-center gap-1.5">
